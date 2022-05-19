@@ -31,7 +31,7 @@ class MirrorStatus:
     STATUS_EXTRACTING = "Extracting...♺"
 
 
-PROGRESS_MAX_SIZE = 100 // 10
+PROGRESS_MAX_SIZE = 100 // 5
 PROGRESS_INCOMPLETE = ['◔', '◑', '◕', '●']
 
 SIZE_UNITS = ['B', 'KB', 'MB', 'GB', 'TB', 'PB']
@@ -88,15 +88,15 @@ def getAllDownload():
 
 
 def get_progress_bar_string(status):
-    completed = status.processed_bytes() / 10
-    total = status.size_raw() / 10
+    completed = status.processed_bytes() / 5
+    total = status.size_raw() / 5
     if total == 0:
         p = 0
     else:
         p = round(completed * 100 / total)
     p = min(max(p, 0), 100)
-    cFull = p // 10
-    cPart = p % 10 - 1
+    cFull = p // 5
+    cPart = p % 5 - 1
     p_str = '●' * cFull
     if cPart >= 0:
         p_str += PROGRESS_INCOMPLETE[cPart]
@@ -119,8 +119,8 @@ def get_readable_message():
         for download in list(download_dict.values()):
             INDEX += 1
             if INDEX > COUNT:
-                msg += f"<b>Filename :</b> <code>{download.name()}</code>"
-                msg += f"\n<b>Status :</b> <i>{download.status()}</i>"
+                msg += f"<b>Filename :</b> <code>{download.name()}</code>\n"
+                msg += f"\n<b>Progress :</b> <i>{download.status()}</i>"
                 if download.status() not in (MirrorStatus.STATUS_ARCHIVING, MirrorStatus.STATUS_EXTRACTING):
                     msg += f"\n<b></b><code>{get_progress_bar_string(download)} {download.progress()}</code>"
                     if download.status() == MirrorStatus.STATUS_CLONING:
